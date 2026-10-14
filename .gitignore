@@ -1,3 +1,5 @@
 venv/
 venv/*
 .env
+Network_Security.egg-info/
+Network_Security.egg-info/*
