@@ -11,7 +11,9 @@ from networksecurity.utils.load_env import load_mongo_database_crendetials
 from networksecurity.exception.exception import NetworkSecurityException
 from networksecurity.logging.logger import logging
 
-MONGO_CLIENT_URI = load_mongo_database_crendetials()
+MONGO_CLIENT_URI, MONGODB_DATABASE, MONGODB_COLLECTION = (
+    load_mongo_database_crendetials()
+)
 
 
 ca = certifi.where()
@@ -57,7 +59,7 @@ if __name__ == "__main__":
     records = network_etl.csv_to_json_convertor("Network_Data/phisingData.csv")
 
     records_length = network_etl.insert_data_to_mongodb(
-        records, "NetworkSecurity", "NetworkData"
+        records, MONGODB_DATABASE, MONGODB_COLLECTION
     )
 
     print(records_length)
