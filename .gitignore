@@ -6,3 +6,4 @@ Network_Security.egg-info/*
 logs/
 logs/*
 __pycache__/
+schema_dump.py
