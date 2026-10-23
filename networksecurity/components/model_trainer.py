@@ -30,8 +30,13 @@ from scipy.stats import loguniform
 
 import os
 import sys
-
+import dagshub
 import mlflow
+
+try:
+    dagshub.init(repo_owner="maazkhan01.work", repo_name="NetworkSecurity", mlflow=True)
+except Exception as e:
+    raise NetworkSecurityException(e, sys)
 
 
 class ModelTrainer:
@@ -53,8 +58,8 @@ class ModelTrainer:
             train_metrics: classification train artifact generated during the model hyperparamater tuning
             test_metrics: classification test artifact generated during the model hyperparamater tuning and testing
         """
-
-        mlflow.set_tracking_uri("sqlite:///mlflow.db")
+        # For Local Saving Only (Turn of for dagshub)
+        # mlflow.set_tracking_uri("sqlite:///mlflow.db")
         mlflow.set_experiment("NetworkSecurity")
 
         print("MLflow tracking URI:", mlflow.get_tracking_uri())
