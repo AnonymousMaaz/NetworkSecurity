@@ -10,3 +10,4 @@ schema_dump.py
 Artifacts/*
 mlruns/*
 mlflow.db
+final_model/

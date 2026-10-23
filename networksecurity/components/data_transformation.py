@@ -113,6 +113,9 @@ class DataTransformation:
                 self.__data_transformation_config.transformed_object_file_path,
                 imputer_object,
             )
+            os.makedirs("final", exist_ok=True)
+            save_object(os.path.join("final", "preprocessor.pkl"), imputer_object)
+
             logging.info("Save Sequence Completed Successfully...")
             logging.info("Packing the Data Transformation Artifacts...")
             data_transformation_artifact = DataTransformationArtifact(
