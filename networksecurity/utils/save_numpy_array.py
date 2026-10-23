@@ -22,3 +22,17 @@ def save_numpy_array_data(file_path: str, array: np.array) -> None:
         logging.info(f"Saved the Numpy array at:{os.path.abspath(file_path)}")
     except Exception as e:
         raise NetworkSecurityException(e, sys) from e
+
+
+def load_numpy_array_data(file_path: str) -> np.array:
+    """
+    Loads the numpy array from a given file path.
+    """
+    try:
+        logging.info("Initializing: Loading the Numpy Array...")
+        if not os.path.exists(file_path):
+            raise Exception(f"The file at {file_path} does not exists.")
+        with open(file_path, "rb") as file_obj:
+            return np.load(file_obj)
+    except Exception as e:
+        raise NetworkSecurityException

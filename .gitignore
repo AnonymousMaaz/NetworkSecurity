@@ -7,3 +7,6 @@ logs/
 logs/*
 __pycache__/
 schema_dump.py
+Artifacts/*
+mlruns/*
+mlflow.db
