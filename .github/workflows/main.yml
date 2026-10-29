@@ -88,7 +88,7 @@ jobs:
                 docker rm -f networksecurity 2>/dev/null || true
                 docker run -d \
                 --restart unless-stopped \
-                -p 8080:8080 \
+                -p 8080:8000 \
                 --ipc="host" \
                 --name=networksecurity \
                 -e MONGO_CLIENT_URI="${{ secrets.MONGO_CLIENT_URI }}" \
