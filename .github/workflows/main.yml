@@ -83,11 +83,14 @@ jobs:
               run: |
                 docker pull ${{ secrets.AWS_ECR_LOGIN_URI }}/${{ secrets.ECR_REPOSITORY_NAME }}:latest
 
-            - name: Run Docker Image to Serve Users
+            - name: Replace running application containers
               run: |
+                docker rm -f networksecurity 2>/dev/null || true
                 docker run -d -p 8080:8080 --ipc="host" --name=networksecurity -e 'AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}' -e 'AWS_REGION=${{ secrets.AWS_REGION }}' ${{secrets.AWS_ECR_LOGIN_URI}}/${{secrets.ECR_REPOSITORY_NAME}}:latest
             
-            - name: Clean previous images and containers
+            - name: Clean unused Docker images and build cache
+              if: always()
               run: |
-                docker system prune -f
+                docker image prune -af
+                docker builder prune -af
 
