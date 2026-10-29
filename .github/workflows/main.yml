@@ -91,7 +91,7 @@ jobs:
                 -p 8080:8080 \
                 --ipc="host" \
                 --name=networksecurity \
-                -e MONGODB_URI="${{ secrets.MONGO_CLIENT_URI }}" \
+                -e MONGO_CLIENT_URI="${{ secrets.MONGO_CLIENT_URI }}" \
                 -e MONGODB_DATABASE="${{ secrets.MONGODB_DATABASE }}" \
                 -e MONGODB_COLLECTION="${{ secrets.MONGODB_COLLECTION }}" \
                 -e 'AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}' \
