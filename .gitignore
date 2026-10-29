@@ -10,5 +10,4 @@ schema_dump.py
 Artifacts/*
 mlruns/*
 mlflow.db
-final/
 valid_data/
