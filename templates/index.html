@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
+
+  <meta
+    name="description"
+    content="A batch prediction workspace for website phishing features."
+  >
+
+  <title>NetworkSecurity — Analysis workspace</title>
+
+  <link
+    rel="stylesheet"
+    href="{{ url_for('static', path='/style.css') }}"
+  >
+
+  <script
+    src="{{ url_for('static', path='/app.js') }}"
+    defer
+  ></script>
+</head>
+
+<body>
+  <header class="topbar">
+    <a class="brand" href="/ui/">
+      <span class="brand-mark" aria-hidden="true">N<span>↗</span></span>
+      NetworkSecurity
+    </a>
+
+    <nav aria-label="Main navigation">
+      <a href="#workspace">Workspace</a>
+      <a href="/">API reference ↗</a>
+    </nav>
+  </header>
+
+  <main id="workspace">
+    <div class="eyebrow">
+      WEBSITE FEATURE ANALYSIS
+      <span>/</span>
+      WORKSPACE 01
+    </div>
+
+    <section class="intro" aria-labelledby="page-title">
+      <div>
+        <h1 id="page-title">
+          Inspect the data.<br>
+          <span>Find the signal.</span>
+        </h1>
+
+        <p class="intro-copy">
+          A focused workspace for batch predictions.
+          Upload your website features, inspect the results,
+          and export the output.
+        </p>
+      </div>
+
+      <div class="service-info">
+        <span class="service-label">SERVING ENGINE</span>
+        <strong>BentoML</strong>
+        <span>30 input features · 2 output classes</span>
+      </div>
+    </section>
+
+    <div class="workspace-grid">
+      <section class="panel upload-panel" aria-labelledby="upload-title">
+        <div class="section-label">01 / INPUT</div>
+
+        <h2 id="upload-title">Start with a batch.</h2>
+
+        <p class="muted">
+          Upload a CSV containing the model’s encoded website features.
+        </p>
+
+        <form id="upload-form">
+          <label class="dropzone" id="dropzone" for="csv-file">
+            <span class="upload-symbol" aria-hidden="true">↑</span>
+
+            <strong id="file-name">Choose a CSV file</strong>
+
+            <span>or drop it here</span>
+
+            <small>UTF-8 CSV · 2 MiB maximum · 5,000 rows</small>
+
+            <input
+              class="visually-hidden"
+              id="csv-file"
+              type="file"
+              accept=".csv,text/csv"
+              required
+            >
+          </label>
+
+          <div class="file-actions">
+            <button id="template" type="button">
+              Download column template ↓
+            </button>
+
+            <button id="clear" type="button">
+              Clear
+            </button>
+          </div>
+
+          <button class="primary-button" id="analyze" type="submit">
+            <span id="analyze-label">Analyze batch</span>
+            <span aria-hidden="true">↗</span>
+          </button>
+        </form>
+
+        <p id="status" class="status" role="status" aria-live="polite">
+          Ready when you are.
+        </p>
+
+        <p id="error" class="error-message" role="alert" hidden></p>
+      </section>
+
+      <aside class="guide" aria-labelledby="guide-title">
+        <div class="section-label">INPUT GUIDE</div>
+
+        <h2 id="guide-title">Know what goes in.</h2>
+
+        <div class="guide-item">
+          <span>01</span>
+
+          <div>
+            <h3>Features, already extracted.</h3>
+            <p>
+              Upload encoded attributes such as URL length,
+              SSL state, and domain age. A website URL alone
+              is not an input.
+            </p>
+          </div>
+        </div>
+
+        <div class="guide-item">
+          <span>02</span>
+
+          <div>
+            <h3>Keep the original column names.</h3>
+            <p>
+              All 30 features are required. If your CSV includes
+              the Result target column, it is ignored.
+            </p>
+          </div>
+        </div>
+
+        <div class="guide-item">
+          <span>03</span>
+
+          <div>
+            <h3>Read the output in context.</h3>
+            <p>
+              Class 0 corresponds to the original −1 target.
+              Class 1 corresponds to the original +1 target.
+            </p>
+          </div>
+        </div>
+
+        <div class="guide-note">
+          Predictions describe the supplied feature rows.
+          They do not establish that a live website is safe.
+        </div>
+      </aside>
+    </div>
+
+    <section
+      class="panel results"
+      id="results"
+      aria-labelledby="results-title"
+      hidden
+    >
+      <div class="results-heading">
+        <div>
+          <div class="section-label">02 / OUTPUT</div>
+          <h2 id="results-title">Batch results</h2>
+          <p id="result-file" class="muted"></p>
+        </div>
+
+        <button class="secondary-button" id="export" type="button">
+          Export all rows ↓
+        </button>
+      </div>
+
+      <div class="stats">
+        <div>
+          <span>Observations</span>
+          <strong id="total">0</strong>
+        </div>
+
+        <div>
+          <span><i class="class-dot class-zero"></i> Class 0</span>
+          <strong id="class-zero">0</strong>
+        </div>
+
+        <div>
+          <span><i class="class-dot class-one"></i> Class 1</span>
+          <strong id="class-one">0</strong>
+        </div>
+      </div>
+
+      <div class="table-toolbar">
+        <label for="filter">
+          Predictions
+
+          <select id="filter">
+            <option value="all">All classes</option>
+            <option value="0">Class 0</option>
+            <option value="1">Class 1</option>
+          </select>
+        </label>
+
+        <span id="matching-count"></span>
+      </div>
+
+      <div
+        class="table-scroll"
+        tabindex="0"
+        role="region"
+        aria-label="Prediction table. Scroll horizontally to view all features."
+      >
+        <table>
+          <caption class="visually-hidden">
+            Predictions and uploaded feature values
+          </caption>
+
+          <thead id="table-head"></thead>
+          <tbody id="table-body"></tbody>
+        </table>
+      </div>
+
+      <div class="pagination">
+        <button id="previous" type="button">← Previous</button>
+        <span id="page-info"></span>
+        <button id="next" type="button">Next →</button>
+      </div>
+    </section>
+
+    <footer>
+      <span>NetworkSecurity <span>/ Applied machine learning</span></span>
+      <span>Built by Maaz Khan</span>
+    </footer>
+  </main>
+</body>
+</html>

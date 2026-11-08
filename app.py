@@ -1,19 +1,15 @@
 import sys
-import pandas as pd
 
+import pandas as pd
+from fastapi import FastAPI, File, Request, UploadFile
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.templating import Jinja2Templates
 from networksecurity.exception.exception import NetworkSecurityException
 from networksecurity.logging.logger import logging
-from networksecurity.pipeline.training_pipeline import TrainingPipeline
-
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi import FastAPI, File, UploadFile, Request
-from uvicorn import run as app_run
-from fastapi.responses import Response
-from starlette.responses import RedirectResponse
-from fastapi.templating import Jinja2Templates
-
-from networksecurity.utils.save_pickle_object import load_object
 from networksecurity.utils.ml_utils.model.estimator import NetworkModel
+from networksecurity.utils.save_pickle_object import load_object
+from starlette.responses import RedirectResponse
+from uvicorn import run as app_run
 
 app = FastAPI()
 origins = ["*"]
@@ -32,16 +28,6 @@ templates = Jinja2Templates(directory="./templates")
 @app.get("/", tags=["authentication"])
 async def index():
     return RedirectResponse(url="/docs")
-
-
-@app.get("/train")
-async def train():
-    try:
-        train_pipeline = TrainingPipeline()
-        model_trainer_artifact = train_pipeline.start_pipeline()
-        return Response(f"Training Completed: {model_trainer_artifact}")
-    except Exception as e:
-        raise NetworkSecurityException(e, sys)
 
 
 @app.post("/predict")
